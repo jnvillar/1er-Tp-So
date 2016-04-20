@@ -21,6 +21,6 @@ simusched.o: simusched.cpp basetask.h basesched.h tasks.h
 tasks.o: tasks.cpp tasks.h basetask.h
 
 clean:
-	"NO HAGAS MAKE CLEAN GATO"
+	ls *.o | grep -v sched_mistery.o | xargs rm -f --preserve-root
 
 new: clean all
