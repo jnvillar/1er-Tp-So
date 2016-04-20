@@ -1,5 +1,5 @@
 export LC_ALL=C
-CXXFLAGS= -Wall -pedantic -g -ggdb
+CXXFLAGS= -pedantic -g -ggdb
 LDFLAGS= -lpthread
 
 OBJS=main.o simu.o basesched.o basetask.o tasks.o sched_rr.o sched_fcfs.o sched_rr2.o sched_mistery.o sched_no_mistery.o
@@ -21,6 +21,6 @@ simusched.o: simusched.cpp basetask.h basesched.h tasks.h
 tasks.o: tasks.cpp tasks.h basetask.h
 
 clean:
-	rm -f $(OBJS) $(MAIN)
+	"NO HAGAS MAKE CLEAN GATO"
 
 new: clean all
