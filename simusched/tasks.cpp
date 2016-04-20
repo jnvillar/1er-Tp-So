@@ -1,9 +1,10 @@
 #include "tasks.h"
-#include <time.h> 
+#include <time.h>
+#include <stdlib.h>
 
 using namespace std;
 
-/* OBSERBACIONES
+/* OBSERVACIONES
 
 Las nuevas tareas deben ser registadas en task_init.
 Las nuevas tareas deben ejecutar return para terminar
@@ -30,14 +31,16 @@ void TaskAlterno(int pid, vector<int> params) { // params: ms_pid, ms_io, ms_pid
 }
 
 void TaskConsola(int pid, vector<int> params) {
+
 	srand (time(NULL)); // semilla
 	int tiempo;
 
 	/* N llamadas */
 	for (int i = 0; i < params[0]; ++i) {
-		tiempo = rand() % params[2] + params[1]; // numero random entre [1] y [2]
+		tiempo = (rand() % (params[2]-params[1])) + params[1]; // numero random entre bmin y bmax. Asumimos que no puede ser 0
 		uso_IO(pid,tiempo);
 	}
+
 }
 
 
