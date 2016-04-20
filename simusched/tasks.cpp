@@ -1,6 +1,9 @@
 #include "tasks.h"
 #include <time.h>
 #include <stdlib.h>
+#include <iostream>
+#include <stdio.h>
+
 
 using namespace std;
 
@@ -33,7 +36,7 @@ void TaskAlterno(int pid, vector<int> params) { // params: ms_pid, ms_io, ms_pid
 void TaskConsola(int pid, vector<int> params) {
 
 	srand (time(NULL)); // semilla
-	int tiempo;
+	int tiempo; 
 
 	/* N llamadas */
 	for (int i = 0; i < params[0]; ++i) {
@@ -42,7 +45,57 @@ void TaskConsola(int pid, vector<int> params) {
 	}
 
 }
+/*
+void TaskBatch(int pid, vector<int> params) {
 
+	srand (time(NULL)); // semilla
+	int total_cpu = params[0]-params[1];
+	int cant_bloqueos = params[1];
+	while (total_cpu>0){
+		int tiempo = (rand() % (total_cpu-cant_bloqueos))+1;
+		uso_CPU(pid,tiempo);
+		uso_IO(pid,2);
+		total_cpu -= tiempo;
+		cant_bloqueos--;
+	}
+	while(cant_bloqueos>0){
+		uso_IO(pid,2);
+		cant_bloqueos--;
+	}	
+
+}
+*/
+
+void TaskBatch(int pid, vector<int> params) {
+
+	int cant_bloqueos = params[1];
+	int tiempo_cpu = params[0];
+	srand (time(NULL)); // semilla
+	vector<int> tiempos(cant_bloqueos,0);
+	int tiempo_usado = 0;
+	FILE* f = fopen("cout","a");
+	for (int i = 0; i < cant_bloqueos; ++i) {
+		//tiempos[i]=(rand()%(tiempo_cpu-cant_bloqueos-i))+tiempo_usado;
+		if (i == 0){
+			tiempos[i]=(rand()%(tiempo_cpu-cant_bloqueos-i-tiempo_usado));
+		} else {
+			tiempos[i]=(rand()%(tiempo_cpu-cant_bloqueos-i-tiempo_usado))+tiempos[i-1];
+		}
+		
+		fprintf(f, "%d\n",tiempos[i]);
+		tiempo_usado = tiempos[i]+1;
+	}
+	for (int i = 0; i < cant_bloqueos; ++i){
+		if(i!=0){
+			uso_CPU(pid,tiempos[i]);
+		}else{
+			uso_CPU(pid,tiempos[i]-tiempos[i-1]);
+		}		
+		uso_IO(pid,2);
+	}
+	fclose(f);	
+
+}
 
 
 void tasks_init(void) {
@@ -54,4 +107,5 @@ void tasks_init(void) {
 	register_task(TaskAlterno, -1);
 
 	register_task(TaskConsola, 3);
+	register_task(TaskBatch, 2);
 }
