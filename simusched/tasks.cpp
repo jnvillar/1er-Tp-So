@@ -1,6 +1,17 @@
 #include "tasks.h"
+#include <time.h> 
 
 using namespace std;
+
+/* OBSERBACIONES
+
+Las nuevas tareas deben ser registadas en task_init.
+Las nuevas tareas deben ejecutar return para terminar
+return: Tarda un quantum en salir
+uso_CPU: Tiempo de ejecución.
+uso_IO: Tiempo que va a pasar bloqueado. Primero utiliza un seg para bloquearse y luego se bloquea por el tiempo indicado
+
+*/
 
 void TaskCPU(int pid, vector<int> params) { // params: n
 	uso_CPU(pid, params[0]); // Uso el CPU n milisegundos.
@@ -18,6 +29,17 @@ void TaskAlterno(int pid, vector<int> params) { // params: ms_pid, ms_io, ms_pid
 	}
 }
 
+void TaskConsola(int pid, vector<int> params) {
+	srand (time(NULL)); // semilla
+	int tiempo;
+
+	/* N llamadas */
+	for (int i = 0; i < params[0]; ++i) {
+		tiempo = rand() % params[2] + params[1]; // numero random entre [1] y [2]
+		uso_IO(pid,tiempo);
+	}
+}
+
 
 
 void tasks_init(void) {
@@ -27,4 +49,6 @@ void tasks_init(void) {
 	register_task(TaskCPU, 1);
 	register_task(TaskIO, 2);
 	register_task(TaskAlterno, -1);
+
+	register_task(TaskConsola, 3);
 }
