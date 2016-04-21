@@ -66,6 +66,30 @@ void TaskBatch(int pid, vector<int> params) {
 }
 */
 
+
+void TaskBatch(int pid, vector<int> params) {
+
+	srand (time(NULL)); // semilla
+
+	int tiempo_cpu = params[0]-1;
+	int cant_bloqueos = params[1];
+	vector<int> tiempos(cant_bloqueos,0);
+	for (int i = 0; i < cant_bloqueos; ++i) {
+		tiempos[i]=rand()%(tiempo_cpu-(cant_bloqueos-1));
+		tiempo_cpu = tiempo_cpu-tiempos[i];
+	}
+
+	for (int i = 0; i < cant_bloqueos; ++i)
+	{
+		uso_CPU(pid,tiempos[i]);
+		uso_IO(pid,2);
+	}
+
+}
+
+/*
+
+
 void TaskBatch(int pid, vector<int> params) {
 
 	srand (time(NULL)); // semilla
@@ -124,7 +148,7 @@ void TaskBatch(int pid, vector<int> params) {
 
 }
 
-
+*/
 void tasks_init(void) {
 	/* Todos los tipos de tareas se deben registrar acá para poder ser usadas.
 	 * El segundo parámetro indica la cantidad de parámetros que recibe la tarea
