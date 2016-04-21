@@ -7,7 +7,8 @@ MAIN=simusched
 
 .PHONY: all clean new
 all: $(MAIN)
-
+	-rm imagen.png
+	
 $(MAIN): $(OBJS)
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 
