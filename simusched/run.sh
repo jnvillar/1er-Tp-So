@@ -1,0 +1,1 @@
+echo -e '\0033\0143' && make clean && make && ./simusched $@
