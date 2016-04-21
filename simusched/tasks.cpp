@@ -75,9 +75,9 @@ void TaskBatch(int pid, vector<int> params) {
 	vector<int> tiempos(cant_bloqueos,0);
 	FILE* f = fopen("cout","a");
 
-	// cout << "Cant bloqueos:" << cant_bloqueos << endl;
+	cout << "Cant bloqueos:" << cant_bloqueos << endl;
 
-	// cout << "AHHHH" << endl;
+	cout << "AHHHH" << endl;
 
 	tiempos[0] = (rand() % (tiempo_cpu - cant_bloqueos) );
 
@@ -87,7 +87,7 @@ void TaskBatch(int pid, vector<int> params) {
 	{
 		tiempos[i] = ( rand() % (tiempo_cpu - cant_bloqueos - i) ) + tiempos[i-1] + 1;
 
-		// cout << tiempos[i] << endl;
+		cout << tiempos[i] << endl;
 	}
 
 
@@ -103,15 +103,24 @@ void TaskBatch(int pid, vector<int> params) {
 	// 	fprintf(f, "%d\n",tiempos[i]);
 	// 	tiempo_usado = tiempos[i]+1;
 	// }
-	for (int i = 0; i < cant_bloqueos; ++i){
-		if(i!=0){
-			uso_CPU(pid,tiempos[i]);
-		}else{
-			uso_CPU(pid,tiempos[i]-tiempos[i-1]);
-		}		
-		uso_IO(pid,2);
-	}
+	// for (int i = 0; i < cant_bloqueos; ++i){
+	// 	if(i!=0){
+	// 		uso_CPU(pid,tiempos[i]);
+	// 	}else{
+	// 		uso_CPU(pid,tiempos[i]-tiempos[i-1]);
+	// 	}		
+	// 	uso_IO(pid,2);
+	// }
 	// fclose(f);	
+
+	uso_CPU( pid, tiempos[0]);
+	uso_IO( pid, 2);
+	for (int i = 0; i < cant_bloqueos; ++i)
+	{
+		uso_CPU( pid, tiempos[i+1] - tiempos[i]);
+		uso_IO( pid, 2);
+	}
+
 
 }
 
