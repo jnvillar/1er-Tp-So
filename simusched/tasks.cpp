@@ -52,19 +52,19 @@ void TaskConsola(int pid, vector<int> params) {
 void TaskBatch(int pid, vector<int> params) {
 
 	int cant_bloqueos = params[1];
-	int tiempo_cpu = params[0];
+	int tiempo_cpu = params[0]-1;
 	srand (time(NULL)); // semilla
 	vector<int> tiempos(cant_bloqueos,0);
 	
 	for (int i = 0; i < cant_bloqueos; i++) {
-		tiempos[i]=(rand()%(tiempo_cpu-1-cant_bloqueos));
+		tiempos[i]=(rand()%(tiempo_cpu-cant_bloqueos));
 	}
 	sort(tiempos.begin(), tiempos.end());
 	for (int i = 1; i < cant_bloqueos; i++) {
 		tiempos[i] -= tiempos[i-1];		
 	}
 
-	int restante = tiempo_cpu-cant_bloqueos-1;
+	int restante = tiempo_cpu-cant_bloqueos;
 	
 	for (int i = 0; i < cant_bloqueos; i++){
 		if (tiempos[i] != 0) {
