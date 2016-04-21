@@ -68,23 +68,41 @@ void TaskBatch(int pid, vector<int> params) {
 
 void TaskBatch(int pid, vector<int> params) {
 
-	int cant_bloqueos = params[1];
-	int tiempo_cpu = params[0];
 	srand (time(NULL)); // semilla
+
+	int tiempo_cpu = params[0];
+	int cant_bloqueos = params[1];
 	vector<int> tiempos(cant_bloqueos,0);
-	int tiempo_usado = 0;
 	FILE* f = fopen("cout","a");
-	for (int i = 0; i < cant_bloqueos; ++i) {
-		//tiempos[i]=(rand()%(tiempo_cpu-cant_bloqueos-i))+tiempo_usado;
-		if (i == 0){
-			tiempos[i]=(rand()%(tiempo_cpu-cant_bloqueos-i-tiempo_usado));
-		} else {
-			tiempos[i]=(rand()%(tiempo_cpu-cant_bloqueos-i-tiempo_usado))+tiempos[i-1];
-		}
-		
-		fprintf(f, "%d\n",tiempos[i]);
-		tiempo_usado = tiempos[i]+1;
+
+	// cout << "Cant bloqueos:" << cant_bloqueos << endl;
+
+	// cout << "AHHHH" << endl;
+
+	tiempos[0] = (rand() % (tiempo_cpu - cant_bloqueos) );
+
+	cout << tiempos[0] << endl;
+
+	for (int i = 1; i < cant_bloqueos; ++i)
+	{
+		tiempos[i] = ( rand() % (tiempo_cpu - cant_bloqueos - i) ) + tiempos[i-1] + 1;
+
+		// cout << tiempos[i] << endl;
 	}
+
+
+
+	// for (int i = 0; i < cant_bloqueos; ++i) {
+	// 	//tiempos[i]=(rand()%(tiempo_cpu-cant_bloqueos-i))+tiempo_usado;
+	// 	if (i == 0){
+	// 		tiempos[i]=(rand()%(tiempo_cpu-cant_bloqueos-i-tiempo_usado));
+	// 	} else {
+	// 		tiempos[i]=(rand()%(tiempo_cpu-cant_bloqueos-i-tiempo_usado))+tiempos[i-1];
+	// 	}
+		
+	// 	fprintf(f, "%d\n",tiempos[i]);
+	// 	tiempo_usado = tiempos[i]+1;
+	// }
 	for (int i = 0; i < cant_bloqueos; ++i){
 		if(i!=0){
 			uso_CPU(pid,tiempos[i]);
@@ -93,7 +111,7 @@ void TaskBatch(int pid, vector<int> params) {
 		}		
 		uso_IO(pid,2);
 	}
-	fclose(f);	
+	// fclose(f);	
 
 }
 
