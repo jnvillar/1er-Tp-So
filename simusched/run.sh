@@ -3,4 +3,4 @@ if [ $# -eq 0 ]; then
     exit 1
 fi
 
-echo -e '\0033\0143' && make clean && make && ./simusched $@
+echo -e '\0033\0143' && make clean && make && ./simusched $@ | python graphsched.py >> imagen.png
