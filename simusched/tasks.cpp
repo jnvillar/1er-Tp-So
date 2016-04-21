@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <iostream>
 #include <stdio.h>
+#include <algorithm>
 
 
 using namespace std;
@@ -66,24 +67,26 @@ void TaskBatch(int pid, vector<int> params) {
 }
 */
 
+/*
 void TaskBatch(int pid, vector<int> params) {
 
 	int cant_bloqueos = params[1];
 	int tiempo_cpu = params[0];
 	srand (time(NULL)); // semilla
 	vector<int> tiempos(cant_bloqueos,0);
-	int tiempo_usado = 0;
+	
 	FILE* f = fopen("cout","a");
 	for (int i = 0; i < cant_bloqueos; ++i) {
 		//tiempos[i]=(rand()%(tiempo_cpu-cant_bloqueos-i))+tiempo_usado;
-		if (i == 0){
-			tiempos[i]=(rand()%(tiempo_cpu-cant_bloqueos-i-tiempo_usado));
-		} else {
-			tiempos[i]=(rand()%(tiempo_cpu-cant_bloqueos-i-tiempo_usado))+tiempos[i-1];
-		}
+		
+	
+		tiempos[i]=(rand()%(tiempo_cpu-cant_bloqueos+i))+1;
+		cant_bloqueos--;
+		tiempo_cpu -= tiempos[i]; // +1 ?
+		
 		
 		fprintf(f, "%d\n",tiempos[i]);
-		tiempo_usado = tiempos[i]+1;
+		
 	}
 	for (int i = 0; i < cant_bloqueos; ++i){
 		if(i!=0){
@@ -96,7 +99,30 @@ void TaskBatch(int pid, vector<int> params) {
 	fclose(f);	
 
 }
+*/
 
+void TaskBatch(int pid, vector<int> params) {
+
+	int cant_bloqueos = params[1];
+	int tiempo_cpu = params[0];
+	srand (time(NULL)); // semilla
+	vector<int> tiempos(cant_bloqueos,0);
+	
+	for (int i = 0; i < cant_bloqueos; ++i) {
+		tiempos[i]=(rand()%(tiempo_cpu-cant_bloqueos));
+	}
+	sort(tiempos.begin(), tiempos.end());
+	for (int i = 1; i < cant_bloqueos; ++i) {
+		tiempos[i] -= tiempos[i-1];		
+	}
+	for (int i = 0; i < cant_bloqueos; ++i){
+		if (tiempos[i] != 0) {
+			uso_CPU(pid,tiempos[i]);
+		}		
+		uso_IO(pid,2);
+	}
+	
+}
 
 void tasks_init(void) {
 	/* Todos los tipos de tareas se deben registrar acá para poder ser usadas.
