@@ -41,30 +41,29 @@ void TaskConsola(int pid, vector<int> params) {
 
 	/* N llamadas */
 	for (int i = 0; i < params[0]; ++i) {
-		tiempo = (rand() % (params[2]-params[1])) + params[1]; // numero random entre bmin y bmax. Asumimos que no puede ser 0
+		tiempo = (rand() % (params[2]-params[1]+1)) + params[1]; // numero random entre bmin y bmax. Asumimos que no puede ser 0
 		uso_IO(pid,tiempo);
 	}
 
 }
 
 
-
 void TaskBatch(int pid, vector<int> params) {
 
 	int cant_bloqueos = params[1];
-	int tiempo_cpu = params[0]-1;
+	int tiempo_cpu = params[0];
 	srand (time(NULL)); // semilla
 	vector<int> tiempos(cant_bloqueos,0);
 	
 	for (int i = 0; i < cant_bloqueos; i++) {
-		tiempos[i]=(rand()%(tiempo_cpu-cant_bloqueos));
+		tiempos[i]=(rand()%(tiempo_cpu-1-cant_bloqueos));
 	}
 	sort(tiempos.begin(), tiempos.end());
 	for (int i = 1; i < cant_bloqueos; i++) {
-		tiempos[i] -= tiempos[i-1];		
+		tiempos[cant_bloqueos-i] -= tiempos[cant_bloqueos-i-1];		
 	}
 
-	int restante = tiempo_cpu-cant_bloqueos;
+	int restante = tiempo_cpu-1-cant_bloqueos;
 	
 	for (int i = 0; i < cant_bloqueos; i++){
 		if (tiempos[i] != 0) {
@@ -73,6 +72,7 @@ void TaskBatch(int pid, vector<int> params) {
 		}		
 		uso_IO(pid,2);
 	}
+	
 	if (restante != 0){
 		uso_CPU(pid,restante);
 	}
