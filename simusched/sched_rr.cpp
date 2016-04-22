@@ -33,7 +33,7 @@ void SchedRR::unblock(int pid) {
 
 int SchedRR::tick(int cpu, const enum Motivo m) {
 	int siguiente;
-	if (current_pid(cpu) == IDLE_TASK){
+	if (current_pid(cpu) == IDLE_TASK || m == EXIT){
 		if (!q.empty()){
 			siguiente = q.front();
 			q.pop();
@@ -43,17 +43,7 @@ int SchedRR::tick(int cpu, const enum Motivo m) {
 		return siguiente;
 	} 
 
-	if (m == EXIT){
-		if (!q.empty()){
-			siguiente = q.front();
-			q.pop();
-		} else {
-			siguiente = IDLE_TASK;
-		}	
-		return siguiente;
-	}
-
-	if (m == BLOCK){
+	if (m == EXIT || m == BLOCK){
 		def_quantum[cpu] = cpu_quantum[cpu];
 		if (!q.empty()){
 			siguiente = q.front();
@@ -63,6 +53,8 @@ int SchedRR::tick(int cpu, const enum Motivo m) {
 		}	
 		return siguiente;
 	}
+
+	
 
 	if (m == TICK){
 		def_quantum[cpu]--;
