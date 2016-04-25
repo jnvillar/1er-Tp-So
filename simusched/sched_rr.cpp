@@ -9,7 +9,7 @@ using namespace std;
 SchedRR::SchedRR(vector<int> argn) {
 	// Round robin recibe la cantidad de cores y sus cpu_quantum por parámetro
 	
-	queue<int> q;
+
 	cpu_quantum.clear();
 	def_quantum.clear();
 	for (int i = 1; i < argn.size(); ++i){
@@ -33,7 +33,7 @@ void SchedRR::unblock(int pid) {
 
 int SchedRR::tick(int cpu, const enum Motivo m) {
 	int siguiente;
-	if (current_pid(cpu) == IDLE_TASK || m == EXIT){
+	if (current_pid(cpu) == IDLE_TASK){
 		if (!q.empty()){
 			siguiente = q.front();
 			q.pop();

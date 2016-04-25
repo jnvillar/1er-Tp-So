@@ -15,10 +15,11 @@ class SchedNoMistery : public SchedBase {
   private:
     std::vector<std::queue<int> > vq;
     std::vector<int> def_quantum;
+    std::vector<int> cpu_quantum;
     std::vector<int> unblock_to;
     int quantum, n, cur_pri;
 
-    int next(void);
+    int next(int cpu);
 };
 
 #endif
