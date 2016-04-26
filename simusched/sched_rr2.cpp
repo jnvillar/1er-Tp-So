@@ -32,9 +32,9 @@ SchedRR2::~SchedRR2() {
 
 
 void SchedRR2::load(int pid) {	
-	int menor = q[0].size() ;	
+	int menor = 0;	
 	for (int i = 0; i < q.size(); ++i) {
-		if(q[i].size()<menor){
+		if(q[i].size()<q[menor].size()){
 			menor = i;
 		}
 	}		
@@ -46,8 +46,9 @@ void SchedRR2::unblock(int pid) {
 	int nucleo = -1;
 	for (int i = 0; i < tasks.size(); ++i) {
 		for (int j = 0; j < tasks[i].size(); ++j) {
-			if(tasks[i][j] == pid);
-			nucleo = i;
+			if(tasks[i][j] == pid){
+				nucleo = i;
+			}
 		}
 	}
 	q[nucleo].push(pid);
