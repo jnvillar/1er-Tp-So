@@ -34,7 +34,7 @@ SchedRR2::~SchedRR2() {
 void SchedRR2::load(int pid) {	
 	int menor = 0;	
 	for (int i = 0; i < q.size(); ++i) {
-		if(q[i].size()<q[menor].size()){
+		if(tasks[i].size()<tasks[menor].size()){
 			menor = i;
 		}
 	}		
