@@ -10,7 +10,7 @@ using namespace std;
 
 int main(){
 	srand(time(NULL));
-	FILE* out = fopen("LoteProcesos.tsk", "w");
+	FILE* out = fopen("Tareas/ej2.tsk", "w");
 	fprintf(out, "%s\n", "TaskCPU 500");
 	int bloqueo1 = (rand()%4)+1;
 	int bloqueo2 = (rand()%4)+1;

@@ -1,4 +1,4 @@
 TaskCPU 500
-TaskIO 10 4
-TaskIO 20 1
-TaskIO 30 2
+TaskIO 10 1
+TaskIO 20 4
+TaskIO 30 1
